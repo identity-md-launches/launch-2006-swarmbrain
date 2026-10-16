@@ -1,0 +1,10 @@
+# Foundry build artifacts
+out/
+cache/
+broadcast/
+
+# Local scratch space (deleted before verification anyway)
+test/scratch/
+
+# Editor noise
+.DS_Store
