@@ -28,6 +28,22 @@ interface Vm {
 
     /// @notice Labels an address in traces.
     function label(address account, string calldata newLabel) external;
+
+    /// @notice Sets the ether balance of `account`.
+    function deal(address account, uint256 newBalance) external;
+
+    /// @notice An event recorded by `recordLogs`.
+    struct Log {
+        bytes32[] topics;
+        bytes data;
+        address emitter;
+    }
+
+    /// @notice Starts recording every event emitted from now on.
+    function recordLogs() external;
+
+    /// @notice Returns the events recorded since `recordLogs` and clears the recording.
+    function getRecordedLogs() external returns (Log[] memory logs);
 }
 
 /// @notice A small assertion base for the tests: every assertion reverts with its message on failure,
@@ -56,8 +72,20 @@ abstract contract TestBase {
         require(keccak256(bytes(a)) == keccak256(bytes(b)), err);
     }
 
+    function assertEq(bytes memory a, bytes memory b, string memory err) internal pure {
+        require(keccak256(a) == keccak256(b), err);
+    }
+
+    function assertEq(bytes32 a, bytes32 b, string memory err) internal pure {
+        require(a == b, err);
+    }
+
     function assertLe(uint256 a, uint256 b, string memory err) internal pure {
         require(a <= b, err);
+    }
+
+    function assertGe(uint256 a, uint256 b, string memory err) internal pure {
+        require(a >= b, err);
     }
 
     function assertGt(uint256 a, uint256 b, string memory err) internal pure {
